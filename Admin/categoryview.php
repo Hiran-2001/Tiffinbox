@@ -1,0 +1,43 @@
+<?php
+  include('header.php');
+  include("../dboperation.php");
+  $obj=new dboperation();
+  $s="select * from tbl_category";
+  $res=$obj->executequery ($s);  
+  ?>
+<div class="col-sm-12 col-xl-10">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">CATEGORY</h6>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Category Name</th>
+                                        <th scope="col">Image</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <?php
+                                      while($r=mysqli_fetch_array($res))
+                                      {
+                                      ?>
+                                    <tr>
+                                      <td> <?php echo$r["category_name"];?></td>
+                                      <td>
+                                                    <img src="../uploads/<?php echo $r['image']; ?> "style="width:150px;height:150px;" />         
+                                                </td>
+                                      
+
+                                      <td><a href="categorydelete.php?did=<?php echo$r["categoryid"];?>">Delete</a href></td>
+
+                                      <td><a href="categoryedit.php?did=<?php echo$r["categoryid"];?>">Edit</a href></td>
+                                    </tr>
+                                    <?php
+                                      }
+                                      ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                     <?php
+  include('footer.php');
+  ?>
