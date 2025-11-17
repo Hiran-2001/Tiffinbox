@@ -18,12 +18,12 @@
         $result1=$obj->executequery($sqlquery1);
         if($result1==1)
         {
-          echo "<script>alert('Registration Succesfully!!');window.location='districtreg.php'</script>";
+          echo "<script>alert('Registration Succesfully!!');window.location='district.php'</script>";
     
         }
         else
         {
-        echo "<script>alert('Registration Failed!!');window.location='districtreg.php'</script>";
+        echo "<script>alert('Registration Failed!!');window.location='district.php'</script>";
 }
 }
 }

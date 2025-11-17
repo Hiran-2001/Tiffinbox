@@ -7,18 +7,19 @@ require_once '../dboperation.php';   // your DB class
 $db = new dboperation();
 
 // ---------- 1. Security ----------
+
 if (!isset($_SESSION['delivery_person_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
-$deliveryPersonId = (int)$_SESSION['delivery_person_id'];   // <-- set this in login!
+$deliveryPersonId = (int) $_SESSION['delivery_person_id'];   // <-- set this in login!
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     exit;
 }
 
-$requestId = isset($_POST['requestid']) ? (int)$_POST['requestid'] : 0;
+$requestId = isset($_POST['requestid']) ? (int) $_POST['requestid'] : 0;
 if ($requestId <= 0) {
     echo json_encode(['success' => false, 'message' => 'Invalid request ID']);
     exit;
