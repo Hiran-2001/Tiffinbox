@@ -34,8 +34,9 @@ $result2= $obj->executequery($sqlquery2);
 
 if (mysqli_num_rows($result2) == 1) {
     $row2  = mysqli_fetch_array($result2);
+    error_log("Row2 data: " . print_r($row2, true));
     $_SESSION["username"] = $username;
-    $_SESSION["delivery_person_id"] = $row2["delivery_person_id"];
+    $_SESSION["deliverypersonid"] = $row2["deliverypersonid"];
     header("location:..\Deliveryperson\index.php");
     // die();
 }

@@ -68,7 +68,7 @@ session_start();
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="profile.php"><i class="fa fa-user me-2"></i>Profile</a></li>
-                                <li><a class="dropdown-item" href="orders.php"><i class="fa fa-shopping-cart me-2"></i>My Orders</a></li>
+                                <!-- <li><a class="dropdown-item" href="orders.php"><i class="fa fa-shopping-cart me-2"></i>My Orders</a></li> -->
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="logout.php"><i class="fa fa-sign-out-alt me-2"></i>Logout</a></li>
                             </ul>

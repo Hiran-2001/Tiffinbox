@@ -1,18 +1,17 @@
 <?php
-// accept_delivery.php
+// mark_delivered.php
 session_start();
 header('Content-Type: application/json');
 
-require_once '../dboperation.php';   // your DB class
+require_once '../dboperation.php';
 $db = new dboperation();
 
 // ---------- 1. Security ----------
-
 if (!isset($_SESSION['deliverypersonid'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
-$deliveryPersonId = (int) $_SESSION['deliverypersonid'];   // <-- set this in login!
+$deliveryPersonId = (int) $_SESSION['deliverypersonid'];
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
@@ -25,39 +24,38 @@ if ($requestId <= 0) {
     exit;
 }
 
-// ---------- 2. Verify the request is still available ----------
+// ---------- 2. Verify the request is assigned to this delivery person ----------
 $check = $db->con->prepare(
     "SELECT requestid FROM tbl_request 
      WHERE requestid = ? 
-       AND (delivarypersonid IS NULL OR delivarypersonid = 0) 
-       AND status = 'Paid'"
+       AND delivarypersonid = ? 
+       AND status IN ('Assigned', 'Paid')"
 );
 
-$check->bind_param("i", $requestId);
+$check->bind_param("ii", $requestId, $deliveryPersonId);
 $check->execute();
 $check->store_result();
 
 if ($check->num_rows === 0) {
     $check->close();
-    echo json_encode(['success' => false, 'message' => 'Request no longer available']);
+    echo json_encode(['success' => false, 'message' => 'Request not found or not assigned to you']);
     exit;
 }
 $check->close();
 
-
-// ---------- 3. Assign the request ----------
+// ---------- 3. Mark as delivered ----------
 $stmt = $db->con->prepare(
     "UPDATE tbl_request 
-     SET delivarypersonid = ?, status = 'Assigned' 
-     WHERE requestid = ?"
+     SET status = 'Delivered' 
+     WHERE requestid = ? AND delivarypersonid = ?"
 );
 
-$stmt->bind_param("ii", $deliveryPersonId, $requestId);
+$stmt->bind_param("ii", $requestId, $deliveryPersonId);
 $ok = $stmt->execute();
 $stmt->close();
 
 echo json_encode([
     'success' => $ok,
-    'message' => $ok ? "Delivery #$requestId accepted!" : "Database error"
+    'message' => $ok ? "Delivery #$requestId marked as delivered!" : "Database error"
 ]);
 ?>
